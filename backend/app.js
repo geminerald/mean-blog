@@ -8,7 +8,11 @@ const userRoutes = require("./routes/user");
 
 const app = express();
 
-mongoose.connect("mongodb+srv://root:r00tUser1@zwcluster1.znjzd.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+mongoose.connect(
+  "mongodb+srv://root:" +
+  process.env.MONGO_ATLAS_PW +
+  "@zwcluster1.znjzd.mongodb.net/myFirstDatabase?w=majority"
+  )
 .then(() => {
   console.log("Connected to Database");
 })
@@ -17,12 +21,12 @@ mongoose.connect("mongodb+srv://root:r00tUser1@zwcluster1.znjzd.mongodb.net/myFi
 });
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/images", express.static(path.join("backend/images")));
 
-app.use((req,res,next)=>{
+app.use((req, res, next)=>{
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS, PUT');
   next();
 });
